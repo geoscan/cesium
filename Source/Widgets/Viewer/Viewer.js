@@ -163,6 +163,8 @@ define([
                 description : feature.description
             });
 
+            entity._feature = feature;
+
             if (defined(feature.position)) {
                 var ecfPosition = viewer.scene.globe.ellipsoid.cartographicToCartesian(feature.position, cartesian3Scratch);
                 entity.position = new ConstantPositionProperty(ecfPosition);
