@@ -145,6 +145,7 @@ define([
         });
 
         when(imageryLayerFeaturePromise, function(features) {
+            viewer.selectedFeatures = features;
             // Has this async pick been superseded by a later one?
             if (viewer.selectedEntity !== loadingMessage) {
                 return;
@@ -700,6 +701,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
         this._zoomOptions = undefined;
         this._selectedEntityChanged = new Event();
         this._trackedEntityChanged = new Event();
+        this.selectedFeaturesChanged = new Event();
 
         knockout.track(this, ['_trackedEntity', '_selectedEntity', '_clockTrackedDataSource']);
 
@@ -1263,6 +1265,17 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
                         selectionIndicatorViewModel.animateDepart();
                     }
                     this._selectedEntityChanged.raiseEvent(value);
+                }
+            }
+        },
+        selectedFeatures : {
+            get : function() {
+                return this._selectedFeatures;
+            },
+            set : function(value) {
+                if (this._selectedFeatures !== value) {
+                    this._selectedFeatures = value;
+                    this.selectedFeaturesChanged.raiseEvent(value);
                 }
             }
         },
