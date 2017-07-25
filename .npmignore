@@ -9,6 +9,7 @@
 /.settings
 /.travis.yml
 /.vscode
+/Apps
 /Build
 /Cesium-*.zip
 /Documentation
