@@ -90,25 +90,25 @@ define([
     ImageryLayerFeatureInfo.prototype.configureDescriptionFromProperties = function(properties) {
         this.description = ImageryLayerFeatureInfo.describe(properties);
     };
-	
-	ImageryLayerFeatureInfo.describe(properties) {
-		var html = '<table class="cesium-infoBox-defaultTable">';
-		for (var key in properties) {
-			if (properties.hasOwnProperty(key)) {
-				var value = properties[key];
-				if (defined(value)) {
-					if (typeof value === 'object') {
-						html += '<tr><td>' + key + '</td><td>' + describe(value) + '</td></tr>';
-					} else {
-						html += '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
-					}
-				}
-			}
-		}
-		html += '</table>';
 
-		return html;
-	}
+    ImageryLayerFeatureInfo.describe = function(properties) {
+        var html = '<table class="cesium-infoBox-defaultTable">';
+        for (var key in properties) {
+            if (properties.hasOwnProperty(key)) {
+                var value = properties[key];
+                if (defined(value)) {
+                    if (typeof value === 'object') {
+                        html += '<tr><td>' + key + '</td><td>' + describe(value) + '</td></tr>';
+                    } else {
+                        html += '<tr><td>' + key + '</td><td>' + value + '</td></tr>';
+                    }
+                }
+            }
+        }
+        html += '</table>';
+
+        return html;
+    };
 
     return ImageryLayerFeatureInfo;
 });
