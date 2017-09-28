@@ -1,6 +1,10 @@
 //#define SHOW_TILE_BOUNDARIES
+#ifdef GL_EXT_frag_depth
+#extension GL_EXT_frag_depth : enable
+#endif
 
 uniform vec4 u_initialColor;
+uniform float u_far;
 
 #if TEXTURE_UNITS > 0
 uniform sampler2D u_dayTextures[TEXTURE_UNITS];
@@ -54,6 +58,7 @@ uniform vec2 u_lightingFadeDistance;
 
 varying vec3 v_positionMC;
 varying vec3 v_positionEC;
+varying vec4 v_position;
 varying vec3 v_textureCoordinates;
 varying vec3 v_normalMC;
 varying vec3 v_normalEC;
@@ -204,6 +209,9 @@ void main()
     gl_FragColor = vec4(czm_fog(v_distance, finalColor.rgb, fogColor), finalColor.a);
 #else
     gl_FragColor = finalColor;
+#endif
+#ifdef LOG_DEPTH_BUFFER
+    gl_FragDepthEXT = log(v_position.w + 1.) / log(u_far + 1.);
 #endif
 }
 

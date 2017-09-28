@@ -230,6 +230,7 @@ define([
      */
     function Scene(options) {
         options = defaultValue(options, defaultValue.EMPTY_OBJECT);
+
         var canvas = options.canvas;
         var contextOptions = options.contextOptions;
         var creditContainer = options.creditContainer;
@@ -251,11 +252,23 @@ define([
             creditContainer.style['padding-right'] = '5px';
             canvas.parentNode.appendChild(creditContainer);
         }
+        if (options.logDepthBuffer) {
+            if (context.fragmentDepth) {
+                this.logDepthBuffer = true;
+            } else {
+                console.log('Can\'t use logarithmic depth buffer, since fragDepth extension not supported.\
+Fall back to multifrustum view');
+                this.logDepthBuffer = false;
+            }
+        } else {
+            this.logDepthBuffer = false;
+        }
 
         this._id = createGuid();
         this._jobScheduler = new JobScheduler();
         this._frameState = new FrameState(context, new CreditDisplay(creditContainer), this._jobScheduler);
         this._frameState.scene3DOnly = defaultValue(options.scene3DOnly, false);
+        this._frameState.logDepthBuffer = this.logDepthBuffer;
 
         var ps = new PassState(context);
         ps.viewport = new BoundingRectangle();
@@ -676,8 +689,16 @@ define([
         // initial guess at frustums.
         var near = camera.frustum.near;
         var far = camera.frustum.far;
-        var numFrustums = Math.ceil(Math.log(far / near) / Math.log(this.farToNearRatio));
-        updateFrustums(near, far, this.farToNearRatio, numFrustums, this._frustumCommandsList, false, undefined);
+        var numFrustums;
+        var farToNearRatio;
+        if (this.logDepthBuffer) {
+            numFrustums = 1;
+            farToNearRatio = far / near;
+        } else {
+            numFrustums = Math.ceil(Math.log(far / near) / Math.log(this.farToNearRatio));
+            farToNearRatio = this.farToNearRatio;
+        }
+        updateFrustums(near, far, farToNearRatio, numFrustums, this._frustumCommandsList, false, undefined);
 
         // give frameState, camera, and screen space camera controller initial state before rendering
         updateFrameState(this, 0.0, JulianDate.now());
@@ -1527,12 +1548,18 @@ define([
         // Exploit temporal coherence. If the frustums haven't changed much, use the frustums computed
         // last frame, else compute the new frustums and sort them by frustum again.
         var is2D = scene.mode === SceneMode.SCENE2D;
-        var farToNearRatio = scene.farToNearRatio;
 
+        var farToNearRatio = scene.farToNearRatio;
         var numFrustums;
+
         if (!is2D) {
             // The multifrustum for 3D/CV is non-uniformly distributed.
-            numFrustums = Math.ceil(Math.log(far / near) / Math.log(farToNearRatio));
+            if (scene.logDepthBuffer) {
+                numFrustums = 1;
+                farToNearRatio = far / near;
+            } else {
+                numFrustums = Math.ceil(Math.log(far / near) / Math.log(scene.farToNearRatio));
+            }
         } else {
             // The multifrustum for 2D is uniformly distributed. To avoid z-fighting in 2D,
             // the camera i smoved to just before the frustum and the frustum depth is scaled
@@ -1542,8 +1569,14 @@ define([
             numFrustums = Math.ceil(Math.max(1.0, far - near) / scene.nearToFarDistance2D);
         }
 
-        if (near !== Number.MAX_VALUE && (numFrustums !== numberOfFrustums || (frustumCommandsList.length !== 0 &&
-                (near < frustumCommandsList[0].near || (far > frustumCommandsList[numberOfFrustums - 1].far && !CesiumMath.equalsEpsilon(far, frustumCommandsList[numberOfFrustums - 1].far, CesiumMath.EPSILON8)))))) {
+        var farChange;
+        if (frustumCommandsList.length !== 0){
+            farChange = far / frustumCommandsList[numberOfFrustums - 1].far;
+        }
+        if ((near !== Number.MAX_VALUE && (numFrustums !== numberOfFrustums || (frustumCommandsList.length !== 0 &&
+                ((scene.logDepthBuffer &&
+                (isFinite(farChange) && !CesiumMath.equalsEpsilon(1, farChange, CesiumMath.EPSILON8))) ||
+                (near < frustumCommandsList[0].near || (far > frustumCommandsList[numberOfFrustums - 1].far && !CesiumMath.equalsEpsilon(far, frustumCommandsList[numberOfFrustums - 1].far, CesiumMath.EPSILON8)))))))) {
             updateFrustums(near, far, farToNearRatio, numFrustums, frustumCommandsList, is2D, scene.nearToFarDistance2D);
             createPotentiallyVisibleSet(scene);
         }
