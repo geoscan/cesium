@@ -2529,7 +2529,7 @@ Fall back to multifrustum view');
         clear.execute(context, passState);
 
         // Update globe depth rendering based on the current context and clear the globe depth framebuffer.
-        var useGlobeDepthFramebuffer = environmentState.useGlobeDepthFramebuffer = !picking && defined(scene._globeDepth);
+        var useGlobeDepthFramebuffer = environmentState.useGlobeDepthFramebuffer = defined(scene._globeDepth);
         if (useGlobeDepthFramebuffer) {
             scene._globeDepth.update(context, passState);
             scene._globeDepth.clear(context, passState, clearColor);
