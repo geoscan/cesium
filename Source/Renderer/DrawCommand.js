@@ -499,7 +499,17 @@ define([
      * @param {PassState} [passState] The state for the current render pass.
      */
     DrawCommand.prototype.execute = function(context, passState) {
+        var stencilTest = Cesium.defined(this.level);
+        if (stencilTest) {
+            var gl = context._gl;
+            gl.enable(gl.STENCIL_TEST);
+            gl.stencilFunc(gl.GEQUAL, Math.min(Cesium.maxLevel, this.level), 0xFF);
+            gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
+        }
         context.draw(this, passState);
+        if (stencilTest) {
+            gl.disable(gl.STENCIL_TEST);
+        }
     };
 
     return DrawCommand;
