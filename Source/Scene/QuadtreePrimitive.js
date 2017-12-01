@@ -193,7 +193,7 @@ define([
 
         this._levelZeroTiles = undefined;
 
-        this._tileProvider.cancelReprojections();
+        //this._tileProvider.cancelReprojections();
     };
 
     /**
