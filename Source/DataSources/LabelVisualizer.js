@@ -120,6 +120,7 @@ define([
             var text;
             var label = item.label;
             var show = entity.isShowing && entity.isAvailable(time) && Property.getValueOrDefault(labelGraphics._show, time, true);
+            var allowPicking = entity.allowPicking;
 
             if (show) {
                 position = Property.getValueOrUndefined(entity._position, time, position);
@@ -165,6 +166,7 @@ define([
             label.scaleByDistance = Property.getValueOrUndefined(labelGraphics._scaleByDistance, time, scaleByDistance);
             label.distanceDisplayCondition = Property.getValueOrUndefined(labelGraphics._distanceDisplayCondition, time, distanceDisplayCondition);
             label.disableDepthTestDistance = Property.getValueOrDefault(labelGraphics._disableDepthTestDistance, time, defaultDisableDepthTestDistance);
+            label.allowPicking = allowPicking;
         }
         return true;
     };

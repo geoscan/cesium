@@ -148,6 +148,8 @@ define([
         this._glyphs = [];
         this._backgroundBillboard = undefined;
 
+        this._allowPicking = defaultValue(options.allowPicking, true);
+
         this._rebindAllGlyphs = true;
         this._repositionAllGlyphs = true;
 
@@ -953,6 +955,33 @@ define([
                     var backgroundBillboard = this._backgroundBillboard;
                     if (defined(backgroundBillboard)) {
                         backgroundBillboard.disableDepthTestDistance = value;
+                    }
+                }
+            }
+        },
+
+        /**
+        * Gets whether to allow picking this Label.
+         * @memberof Label.prototype
+        * @type {Boolean}
+        */
+        allowPicking : {
+            get : function() {
+                return this._allowPicking;
+            },
+            set : function(value) {
+                //>>includeStart('debug', pragmas.debug)
+                if (!defined(value)) {
+                    throw new DeveloperError('value is required.');
+                }
+                //>>includeEnd('debug');
+                if (this._allowPicking !== value) {
+                    var glyphs = this._glyphs;
+                    for (var i = 0, len = glyphs.length; i < len; i++) {
+                        var glyph = glyphs[i];
+                        if (defined(glyph.billboard)) {
+                            glyph.billboard.allowPicking = value;
+                        }
                     }
                 }
             }

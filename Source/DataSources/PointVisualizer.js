@@ -97,6 +97,8 @@ define([
             var billboard = item.billboard;
             var heightReference = Property.getValueOrDefault(pointGraphics._heightReference, time, HeightReference.NONE);
             var show = entity.isShowing && entity.isAvailable(time) && Property.getValueOrDefault(pointGraphics._show, time, true);
+            var allowPicking = entity.allowPicking;
+
             if (show) {
                 position = Property.getValueOrUndefined(entity._position, time, position);
                 show = defined(position);
@@ -144,6 +146,7 @@ define([
                 pointPrimitive.pixelSize = Property.getValueOrDefault(pointGraphics._pixelSize, time, defaultPixelSize);
                 pointPrimitive.distanceDisplayCondition = Property.getValueOrUndefined(pointGraphics._distanceDisplayCondition, time, distanceDisplayCondition);
                 pointPrimitive.disableDepthTestDistance = Property.getValueOrDefault(pointGraphics._disableDepthTestDistance, time, defaultDisableDepthTestDistance);
+                pointPrimitive.allowPicking = allowPicking;
             } else if (defined(billboard)) {
                 billboard.show = true;
                 billboard.position = position;
@@ -152,6 +155,7 @@ define([
                 billboard.distanceDisplayCondition = Property.getValueOrUndefined(pointGraphics._distanceDisplayCondition, time, distanceDisplayCondition);
                 billboard.disableDepthTestDistance = Property.getValueOrDefault(pointGraphics._disableDepthTestDistance, time, defaultDisableDepthTestDistance);
                 billboard.heightReference = heightReference;
+                billboard.allowPicking = allowPicking;
 
                 var newColor = Property.getValueOrDefault(pointGraphics._color, time, defaultColor, color);
                 var newOutlineColor = Property.getValueOrDefault(pointGraphics._outlineColor, time, defaultOutlineColor, outlineColor);

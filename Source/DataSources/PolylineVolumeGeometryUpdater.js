@@ -591,6 +591,7 @@ define([
                     id : entity,
                     geometry : new PolylineVolumeGeometry(options)
                 }),
+                allowPicking: entity.allowPicking,
                 appearance : appearance,
                 asynchronous : false,
                 shadows : shadows
@@ -619,6 +620,7 @@ define([
                         lineWidth : geometryUpdater._scene.clampLineWidth(outlineWidth)
                     }
                 }),
+                allowPicking: entity.allowPicking,
                 asynchronous : false,
                 shadows : shadows
             }));

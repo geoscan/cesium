@@ -1013,7 +1013,17 @@ defineSuite([
         });
     });
 
-    it('is not picked', function() {
+    it('has undefined pickId (allowPicking === false)', function() {
+        var b = billboards.add({
+            position : Cartesian3.ZERO,
+            image : whiteImage,
+            id : 'id'
+        });
+
+        expect(b.getPickId(scene.context)).toBeUndefined();
+    });
+
+    it('is not picked (show === false)', function() {
         billboards.add({
             show : false,
             position : Cartesian3.ZERO,
@@ -1021,6 +1031,17 @@ defineSuite([
         });
 
         expect(scene).notToPick();
+    });
+
+    it('is not picked (allowPicking === false)', function() {
+        billboards.add({
+            position : Cartesian3.ZERO,
+            image : whiteImage,
+            allowPicking : false
+        });
+
+        var pick = scene.pick(new Cartesian2(0, 0));
+        expect(pick).not.toBeDefined();
     });
 
     it('picks a billboard using scaleByDistance', function() {
