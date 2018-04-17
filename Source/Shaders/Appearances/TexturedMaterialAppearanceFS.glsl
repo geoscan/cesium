@@ -4,7 +4,7 @@ varying vec2 v_st;
 
 void main()
 {
-    vec3 positionToEyeEC = -v_positionEC; 
+    vec3 positionToEyeEC = -v_positionEC;
 
     vec3 normalEC = normalize(v_normalEC);
 #ifdef FACE_FORWARD
@@ -16,12 +16,10 @@ void main()
     materialInput.positionToEyeEC = positionToEyeEC;
     materialInput.st = v_st;
     czm_material material = czm_getMaterial(materialInput);
-    
-#ifdef FLAT    
+
+#ifdef FLAT
     gl_FragColor = vec4(material.diffuse + material.emission, material.alpha);
 #else
     gl_FragColor = czm_phong(normalize(positionToEyeEC), material);
 #endif
-
-    czm_logDepth(-v_positionEC.z);
 }

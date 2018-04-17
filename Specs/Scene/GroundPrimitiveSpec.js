@@ -285,6 +285,29 @@ defineSuite([
         expect(frameState.commandList.length).toEqual(0);
     });
 
+    it('becomes ready when show is false', function() {
+        if (!GroundPrimitive.isSupported(scene)) {
+            return;
+        }
+
+        primitive = scene.groundPrimitives.add(new GroundPrimitive({
+            geometryInstances : rectangleInstance
+        }));
+        primitive.show = false;
+
+        var ready = false;
+        primitive.readyPromise.then(function() {
+            ready = true;
+        });
+
+        return pollToPromise(function() {
+            scene.render();
+            return ready;
+        }).then(function() {
+            expect(ready).toEqual(true);
+        });
+    });
+
     it('does not render other than for the color or pick pass', function() {
         if (!GroundPrimitive.isSupported(scene)) {
             return;
@@ -732,12 +755,11 @@ defineSuite([
         var frameState = scene.frameState;
         frameState.afterRender.length = 0;
         return pollToPromise(function() {
-            if (frameState.afterRender.length > 0) {
-                frameState.afterRender[0]();
-                return true;
+            for (var i = 0; i < frameState.afterRender.length; ++i) {
+                frameState.afterRender[i]();
             }
             primitive.update(frameState);
-            return false;
+            return primitive.ready;
         }).then(function() {
             return primitive.readyPromise.then(function(arg) {
                 expect(arg).toBe(primitive);
@@ -767,12 +789,11 @@ defineSuite([
         var frameState = scene.frameState;
         frameState.afterRender.length = 0;
         return pollToPromise(function() {
-            if (frameState.afterRender.length > 0) {
-                frameState.afterRender[0]();
-                return true;
+            for (var i = 0; i < frameState.afterRender.length; ++i) {
+                frameState.afterRender[i]();
             }
             primitive.update(frameState);
-            return false;
+            return primitive.ready;
         }).then(function() {
             return primitive.readyPromise.then(function(arg) {
                 expect(arg).toBe(primitive);
@@ -887,8 +908,8 @@ defineSuite([
 
         return pollToPromise(function() {
             primitive.update(frameState);
-            if (frameState.afterRender.length > 0) {
-                frameState.afterRender[0]();
+            for (var i = 0; i < frameState.afterRender.length; ++i) {
+                frameState.afterRender[i]();
             }
             return primitive.ready;
         }).then(function() {
@@ -962,8 +983,8 @@ defineSuite([
 
         return pollToPromise(function() {
             primitive.update(frameState);
-            if (frameState.afterRender.length > 0) {
-                frameState.afterRender[0]();
+            for (var i = 0; i < frameState.afterRender.length; ++i) {
+                frameState.afterRender[i]();
             }
             return primitive.ready;
         }).then(function() {
