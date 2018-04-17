@@ -1,7 +1,4 @@
 define([
-        '../Core/Cartesian3',
-        '../Core/Cartographic',
-        '../Core/Math',
         '../Core/combine',
         '../Core/Credit',
         '../Core/defaultValue',
@@ -10,12 +7,7 @@ define([
         '../Core/DeveloperError',
         '../Core/Event',
         '../Core/freezeObject',
-        '../Core/GeographicTilingScheme',
         '../Core/isArray',
-        '../Core/loadJson',
-        '../Core/loadText',
-        '../Core/loadWithXhr',
-        '../Core/loadXML',
         '../Core/objectToQuery',
         '../Core/queryToObject',
         '../Core/Rectangle',
@@ -24,12 +16,8 @@ define([
         '../ThirdParty/Uri',
         '../ThirdParty/when',
         './ImageryProvider',
-        './TimeDynamicImagery',
-        './GetFeatureInfoFormat'
+        './TimeDynamicImagery'
     ], function(
-        Cartesian3,
-        Cartographic,
-        CesiumMath,
         combine,
         Credit,
         defaultValue,
@@ -38,12 +26,7 @@ define([
         DeveloperError,
         Event,
         freezeObject,
-        GeographicTilingScheme,
         isArray,
-        loadJson,
-        loadText,
-        loadWithXhr,
-        loadXML,
         objectToQuery,
         queryToObject,
         Rectangle,
@@ -52,8 +35,7 @@ define([
         Uri,
         when,
         ImageryProvider,
-        TimeDynamicImagery,
-        GetFeatureInfoFormat) {
+        TimeDynamicImagery) {
     'use strict';
 
     var defaultParameters = freezeObject({
