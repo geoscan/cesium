@@ -1,5 +1,7 @@
 define([
         '../Core/combine',
+        '../Core/Cartesian3',
+        '../Core/Cartographic',
         '../Core/Credit',
         '../Core/defaultValue',
         '../Core/defined',
@@ -13,12 +15,15 @@ define([
         '../Core/Rectangle',
         '../Core/Resource',
         '../Core/WebMercatorTilingScheme',
+		'../Scene/GetFeatureInfoFormat',
         '../ThirdParty/Uri',
         '../ThirdParty/when',
         './ImageryProvider',
         './TimeDynamicImagery'
     ], function(
         combine,
+        Cartesian3,
+        Cartographic,
         Credit,
         defaultValue,
         defined,
@@ -32,6 +37,7 @@ define([
         Rectangle,
         Resource,
         WebMercatorTilingScheme,
+		GetFeatureInfoFormat,
         Uri,
         when,
         ImageryProvider,

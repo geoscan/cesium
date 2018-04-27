@@ -460,13 +460,15 @@ define([
 
             discriminant = qw * qw - product;
             temp = -qw + Math.sqrt(discriminant); // Positively valued.
-            return new Interval(0.0, temp / w2);
+            var root0 = temp / w2;
+            var root1 = difference / temp;
+            return new Interval(root1, root0);
         }
         // q2 == 1.0. On ellipsoid.
         if (qw < 0.0) {
             // Looking inward.
             w2 = Cartesian3.magnitudeSquared(w);
-            return new Interval(0.0, -qw / w2);
+            return new Interval(-qw / w2, -qw / w2);
         }
 
         // qw >= 0.0.  Looking outward or tangent.

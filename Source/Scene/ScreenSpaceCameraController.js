@@ -1723,7 +1723,7 @@ define([
             return;
         }
 
-        var t = Cartesian3.magnitude(ray.origin) > mag ? intersection.start : intersection.stop;
+        var t = Cartesian3.magnitude(ray.origin) > mag ? intersection.start : 1;
         var verticalCenter = Ray.getPoint(ray, t, tilt3DVerticalCenter);
 
         var transform = Transforms.eastNorthUpToFixedFrame(center, ellipsoid, tilt3DTransform);

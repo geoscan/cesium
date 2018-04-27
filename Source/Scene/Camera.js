@@ -2406,7 +2406,7 @@ define([
             return undefined;
         }
 
-        var t = intersection.start > 0.0 ? intersection.start : intersection.stop;
+        var t = intersection.start > 0.0 ? intersection.start : 1;
         return Ray.getPoint(ray, t, result);
     }
 
