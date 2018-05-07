@@ -97,7 +97,7 @@ define([
          */
         this.enableZoom = true;
         /**
-         * If true, allows the user to rotate the camera.  If false, the camera is locked to the current heading.
+         * If true, allows the user to rotate the world which translates the user's position.
          * This flag only applies in 2D and 3D.
          * @type {Boolean}
          * @default true
@@ -1723,7 +1723,7 @@ define([
             return;
         }
 
-        var t = Cartesian3.magnitude(ray.origin) > mag ? intersection.start : 1;
+        var t = intersection.start > 0.0 ? intersection.start : intersection.stop > 0 && Math.abs(intersection.stop) < Math.abs(intersection.start) ? intersection.stop : 1;
         var verticalCenter = Ray.getPoint(ray, t, tilt3DVerticalCenter);
 
         var transform = Transforms.eastNorthUpToFixedFrame(center, ellipsoid, tilt3DTransform);

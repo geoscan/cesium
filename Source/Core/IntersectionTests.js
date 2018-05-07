@@ -420,10 +420,10 @@ define([
 
         if (q2 > 1.0) {
             // Outside ellipsoid.
-            if (qw >= 0.0) {
-                // Looking outward or tangent (0 intersections).
-                return undefined;
-            }
+//            if (qw >= 0.0) {
+//                // Looking outward or tangent (0 intersections).
+//                return undefined;
+//            }
 
             // qw < 0.0.
             var qw2 = qw * qw;
@@ -438,8 +438,8 @@ define([
                 // Distinct roots (2 intersections).
                 discriminant = qw * qw - product;
                 temp = -qw + Math.sqrt(discriminant); // Avoid cancellation.
-                var root0 = temp / w2;
-                var root1 = difference / temp;
+                root0 = temp / w2;
+                root1 = difference / temp;
                 if (root0 < root1) {
                     return new Interval(root0, root1);
                 }
