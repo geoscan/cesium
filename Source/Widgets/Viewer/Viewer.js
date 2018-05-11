@@ -751,7 +751,8 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             that.selectedEntity = pickEntity(that, e);
         }
 
-        cesiumWidget.screenSpaceEventHandler.setInputAction(pickAndSelectObject, ScreenSpaceEventType.LEFT_CLICK);
+		//Turning off default Cesium picker
+        //cesiumWidget.screenSpaceEventHandler.setInputAction(pickAndSelectObject, ScreenSpaceEventType.LEFT_CLICK);
         cesiumWidget.screenSpaceEventHandler.setInputAction(pickAndTrackObject, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     }
 
