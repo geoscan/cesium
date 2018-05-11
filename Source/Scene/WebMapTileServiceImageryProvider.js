@@ -9,7 +9,9 @@ define([
         '../Core/DeveloperError',
         '../Core/Event',
         '../Core/freezeObject',
+		'../Core/GeographicTilingScheme',
         '../Core/isArray',
+		'../Core/Math',
         '../Core/objectToQuery',
         '../Core/queryToObject',
         '../Core/Rectangle',
@@ -31,7 +33,9 @@ define([
         DeveloperError,
         Event,
         freezeObject,
+		GeographicTilingScheme,
         isArray,
+		CesiumMath,
         objectToQuery,
         queryToObject,
         Rectangle,
@@ -666,13 +670,13 @@ define([
             ++formatIndex;
 
             if (format.type === 'json') {
-                return loadJson(url).then(format.callback).otherwise(doRequest);
+                return Resource.fetchJson(url).then(format.callback).otherwise(doRequest);
             } else if (format.type === 'xml') {
-                return loadXML(url).then(format.callback).otherwise(doRequest);
+                return Resource.fetchXML(url).then(format.callback).otherwise(doRequest);
             } else if (format.type === 'text' || format.type === 'html') {
-                return loadText(url).then(format.callback).otherwise(doRequest);
+                return Resource.fetchText(url).then(format.callback).otherwise(doRequest);
             } else {
-                return loadWithXhr({
+                return Resource.fetch({
                     url: url,
                     responseType: format.format
                 }).then(handleResponse.bind(undefined, format)).otherwise(doRequest);
@@ -703,7 +707,7 @@ define([
     ]);
 
     function buildGetFeatureInfoUrl(imageryProvider, infoFormat, col, row, level, i, j) {
-        var uri = new Uri(imageryProvider._url);
+        var uri = new Uri(imageryProvider.url);
         var queryOptions = queryToObject(defaultValue(uri.query, ''));
 
         queryOptions = combine(WebMapTileServiceImageryProvider.GetFeatureInfoDefaultParameters, queryOptions);
