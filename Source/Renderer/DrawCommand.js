@@ -488,6 +488,7 @@ define([
 
         result.dirty = true;
         result.lastDirtyTime = 0;
+		result.level = command.level;
 
         return result;
     };
