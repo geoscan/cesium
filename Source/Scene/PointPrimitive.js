@@ -446,9 +446,9 @@ define([
         },
 
         /**
-         * Gets or sets the user-defined object returned when the point is picked.
+         * Gets or sets the user-defined value returned when the point is picked.
          * @memberof PointPrimitive.prototype
-         * @type {Object}
+         * @type {*}
          */
         id : {
             get : function() {
