@@ -524,7 +524,7 @@ define([
 
         fragmentShader += '    vec3 baseColor = baseColorWithAlpha.rgb;\n';
 
-        if (hasNormals) {
+        if (hasNormals && !material.extensions["KHR_materials_unlit"]) {
             // Add metallic-roughness to fragment shader
             if (defined(parameterValues.metallicRoughnessTexture)) {
                 fragmentShader += '    vec3 metallicRoughness = texture2D(u_metallicRoughnessTexture, ' + v_texcoord + ').rgb;\n';
