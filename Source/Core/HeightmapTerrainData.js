@@ -335,7 +335,7 @@ define([
 
         var width = this._width;
         var height = this._height;
-        var structure = this._structure;
+        var structure = Cesium.clone(this._structure);
         var skirtHeight = this._skirtHeight;
         var stride = structure.stride;
 
@@ -347,6 +347,9 @@ define([
 
         var buffer = meshData.vertices;
         var encoding = meshData.encoding;
+
+        structure.heightOffset = encoding.minimumHeight;
+        structure.heightScale = (encoding.maximumHeight - encoding.minimumHeight) / structure.highestEncodedHeight;
 
         // PERFORMANCE_IDEA: don't recompute these rectangles - the caller already knows them.
         var sourceRectangle = tilingScheme.tileXYToRectangle(thisX, thisY, thisLevel);
@@ -382,7 +385,7 @@ define([
             width : width,
             height : height,
             childTileMask : 0,
-            structure : this._structure,
+            structure : structure,
             createdByUpsampling : true
         });
     };
