@@ -111,7 +111,7 @@ defineSuite([
     afterEach(function() {
         scene.backgroundColor = new Color(0.0, 0.0, 0.0, 0.0);
         scene.debugCommandFilter = undefined;
-        scene.fxaa = false;
+        scene.postProcessStages.fxaa.enabled = false;
         scene.primitives.removeAll();
         scene.morphTo3D(0.0);
 
@@ -418,7 +418,7 @@ defineSuite([
         primitives.add(rectanglePrimitive);
 
         scene.camera.setView({ destination : rectangle });
-        scene.fxaa = false;
+        scene.postProcessStages.fxaa.enabled = false;
         expect(scene).toRenderAndCall(function(rgba) {
             expect(rgba[0]).not.toEqual(0);
             expect(rgba[1]).toEqual(0);
@@ -465,7 +465,7 @@ defineSuite([
             s._oit._translucentMultipassSupport = false;
         }
 
-        s.fxaa = true;
+        s.postProcessStages.fxaa.enabled = false;
 
         var rectangle = Rectangle.fromDegrees(-100.0, 30.0, -90.0, 40.0);
 
@@ -1353,6 +1353,32 @@ defineSuite([
 
         scene.renderForSpecs();
         expect(scene.lastRenderTime).not.toEqual(lastRenderTime);
+
+        scene.destroyForSpecs();
+    });
+
+    it('changing the camera frustum does not cause continuous rendering in requestRenderMode', function() {
+        var scene = createScene();
+
+        scene.renderForSpecs();
+
+        var lastRenderTime = JulianDate.clone(scene.lastRenderTime, scratchTime);
+        expect(lastRenderTime).toBeDefined();
+        expect(scene._renderRequested).toBe(false);
+
+        scene.requestRenderMode = true;
+        scene.maximumRenderTimeChange = undefined;
+
+        scene.camera.frustum.near *= 1.1;
+
+        // Render once properly
+        scene.renderForSpecs();
+        expect(scene.lastRenderTime).not.toEqual(lastRenderTime);
+
+        // Render again - but this time nothing should happen.
+        lastRenderTime = JulianDate.clone(scene.lastRenderTime, scratchTime);
+        scene.renderForSpecs();
+        expect(scene.lastRenderTime).toEqual(lastRenderTime);
 
         scene.destroyForSpecs();
     });
