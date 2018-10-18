@@ -1301,7 +1301,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             }
         },
         /**
-         * Gets the event that is raised when the selected entity chages
+         * Gets the event that is raised when the selected entity changes.
          * @memberof Viewer.prototype
          * @type {Event}
          * @readonly
@@ -1312,7 +1312,7 @@ Either specify options.terrainProvider instead or set options.baseLayerPicker to
             }
         },
         /**
-         * Gets the event that is raised when the tracked entity chages
+         * Gets the event that is raised when the tracked entity changes.
          * @memberof Viewer.prototype
          * @type {Event}
          * @readonly
