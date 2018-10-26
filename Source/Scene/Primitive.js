@@ -1318,7 +1318,7 @@ define([
         for (i = 0; i < length; ++i) {
             var newBS = newBoundingSpheres[i];
             var offset = primitive._batchTable.getBatchedAttribute(i, offsetIndex, new Cartesian3());
-            newBS = boundingSpheres[i].clone(newBS);
+            newBS = boundingSpheres[i] ? boundingSpheres[i].clone(newBS) : boundingSpheres[i];
             transformBoundingSphere(newBS, offset, offsetInstanceExtend[i]);
         }
         var combinedBS = [];
