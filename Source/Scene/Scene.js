@@ -2115,6 +2115,9 @@ define([
                 us.updatePass(Pass.CESIUM_3D_TILE);
                 commands = frustumCommands.commands[Pass.CESIUM_3D_TILE];
                 length = frustumCommands.indices[Pass.CESIUM_3D_TILE];
+                commands = commands.slice(0, length).sort(function(a, b) {
+                        return b.order - a.order;
+                }).concat(commands.slice(length));
                 for (j = 0; j < length; ++j) {
                     executeCommand(commands[j], scene, context, passState);
                 }

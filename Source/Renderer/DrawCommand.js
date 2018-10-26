@@ -542,7 +542,7 @@ define([
         if (stencilTest) {
             gl = context._gl;
             gl.enable(gl.STENCIL_TEST);
-            gl.stencilFunc(gl.GEQUAL, Math.min(Cesium.maxLevel<<3, this.level<<3), 0xF8);
+            gl.stencilFunc(gl.GEQUAL, this.level<<3, 0xF8);
             gl.stencilOp(gl.KEEP, gl.KEEP, gl.REPLACE);
         }
         context.draw(this, passState);
