@@ -524,7 +524,8 @@ define([
 
         result.dirty = true;
         result.lastDirtyTime = 0;
-		result.level = command.level;
+        result.level = command.level;
+        result.order = command.order;
 
         return result;
     };
