@@ -359,9 +359,9 @@ define([
 
             toPickFromRayAndCall : function(util, customEqualityTesters) {
                 return {
-                    compare : function(actual, expected, ray, objectsToExclude) {
+                    compare : function(actual, expected, ray, objectsToExclude, width) {
                         var scene = actual;
-                        var result = scene.pickFromRay(ray, objectsToExclude);
+                        var result = scene.pickFromRay(ray, objectsToExclude, width);
 
                         var webglStub = !!window.webglStub;
                         if (!webglStub) {
@@ -380,9 +380,9 @@ define([
 
             toDrillPickFromRayAndCall : function(util, customEqualityTesters) {
                 return {
-                    compare : function(actual, expected, ray, limit, objectsToExclude) {
+                    compare : function(actual, expected, ray, limit, objectsToExclude, width) {
                         var scene = actual;
-                        var results = scene.drillPickFromRay(ray, limit, objectsToExclude);
+                        var results = scene.drillPickFromRay(ray, limit, objectsToExclude, width);
 
                         var webglStub = !!window.webglStub;
                         if (!webglStub) {
@@ -401,9 +401,9 @@ define([
 
             toSampleHeightAndCall : function(util, customEqualityTesters) {
                 return {
-                    compare : function(actual, expected, position, objectsToExclude) {
+                    compare : function(actual, expected, position, objectsToExclude, width) {
                         var scene = actual;
-                        var results = scene.sampleHeight(position, objectsToExclude);
+                        var results = scene.sampleHeight(position, objectsToExclude, width);
 
                         var webglStub = !!window.webglStub;
                         if (!webglStub) {
@@ -422,9 +422,9 @@ define([
 
             toClampToHeightAndCall : function(util, customEqualityTesters) {
                 return {
-                    compare : function(actual, expected, cartesian, objectsToExclude) {
+                    compare : function(actual, expected, cartesian, objectsToExclude, width) {
                         var scene = actual;
-                        var results = scene.clampToHeight(cartesian, objectsToExclude);
+                        var results = scene.clampToHeight(cartesian, objectsToExclude, width);
 
                         var webglStub = !!window.webglStub;
                         if (!webglStub) {
@@ -576,6 +576,21 @@ define([
                 };
             },
 
+            toBeImageOrImageBitmap : function(util, customEqualityTesters) {
+                return {
+                    compare : function(actual) {
+                        if (typeof createImageBitmap !== 'function') {
+                            return {
+                                pass : actual instanceof Image
+                            };
+                        }
+
+                        return {
+                            pass : actual instanceof ImageBitmap || actual instanceof Image
+                        };
+                    }
+                };
+            },
             toThrowDeveloperError : makeThrowFunction(debug, DeveloperError, 'DeveloperError'),
 
             toThrowRuntimeError : makeThrowFunction(true, RuntimeError, 'RuntimeError'),

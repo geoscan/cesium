@@ -115,6 +115,7 @@ define([
             }
 
             var needsRedraw = false;
+            var updateClamping = false;
             if ((heightReference !== HeightReference.NONE) && !defined(billboard)) {
                 if (defined(pointPrimitive)) {
                     returnPrimitive(item, entity, cluster);
@@ -126,6 +127,12 @@ define([
                 billboard.image = undefined;
                 item.billboard = billboard;
                 needsRedraw = true;
+
+                // If this new billboard happens to have a position and height reference that match our new values,
+                // billboard._updateClamping will not be called automatically. That's a problem because the clamped
+                // height may be based on different terrain than is now loaded. So we'll manually call
+                // _updateClamping below.
+                updateClamping = Cartesian3.equals(billboard.position, position) && billboard.heightReference === heightReference;
             } else if ((heightReference === HeightReference.NONE) && !defined(pointPrimitive)) {
                 if (defined(billboard)) {
                     returnPrimitive(item, entity, cluster);
@@ -192,6 +199,10 @@ define([
                     var textureId = JSON.stringify([cssColor, newPixelSize, cssOutlineColor, newOutlineWidth]);
 
                     billboard.setImage(textureId, createBillboardPointCallback(centerAlpha, cssColor, cssOutlineColor, newOutlineWidth, newPixelSize));
+                }
+
+                if (updateClamping) {
+                    billboard._updateClamping();
                 }
             }
         }
