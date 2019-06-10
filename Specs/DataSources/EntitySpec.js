@@ -202,7 +202,7 @@ defineSuite([
         }
     });
 
-    it('merge always overwrites availability', function() {
+    it('merge does not overwrite availability', function() {
         var entity = new Entity();
         var interval = TimeInterval.fromIso8601({
             iso8601 : '2000-01-01/2001-01-01'
@@ -216,7 +216,7 @@ defineSuite([
         entity2.availability = interval2;
 
         entity.merge(entity2);
-        expect(entity.availability).toBe(interval2);
+        expect(entity.availability).toBe(interval);
     });
 
     it('merge works with custom properties.', function() {
