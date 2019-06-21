@@ -491,8 +491,11 @@ define([
 
     function createComparePickTileFunction(rayOrigin) {
         return function(a, b) {
-            var aDist = BoundingSphere.distanceSquaredTo(a.pickBoundingSphere, rayOrigin);
-            var bDist = BoundingSphere.distanceSquaredTo(b.pickBoundingSphere, rayOrigin);
+            //var aDist = BoundingSphere.distanceSquaredTo(a.pickBoundingSphere, rayOrigin);
+            //var bDist = BoundingSphere.distanceSquaredTo(b.pickBoundingSphere, rayOrigin);
+            //fix for far big tiles picking instead of nearest
+            var aDist = Cesium.Cartesian3.magnitudeSquared(rayOrigin, a.pickBoundingSphere.center);
+            var bDist = Cesium.Cartesian3.magnitudeSquared(rayOrigin, b.pickBoundingSphere.center);
 
             return aDist - bDist;
         };
