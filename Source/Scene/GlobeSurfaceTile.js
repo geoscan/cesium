@@ -513,8 +513,10 @@ define([
 
         when(meshPromise, function(mesh) {
             surfaceTile.mesh = mesh;
-            surfaceTile.orientedBoundingBox = OrientedBoundingBox.clone(mesh.orientedBoundingBox, surfaceTile.orientedBoundingBox);
-            surfaceTile.occludeePointInScaledSpace = Cartesian3.clone(mesh.occludeePointInScaledSpace, surfaceTile.occludeePointInScaledSpace);
+			if (level <= 3) {
+				surfaceTile.orientedBoundingBox = OrientedBoundingBox.clone(mesh.orientedBoundingBox, surfaceTile.orientedBoundingBox);
+				surfaceTile.occludeePointInScaledSpace = Cartesian3.clone(mesh.occludeePointInScaledSpace, surfaceTile.occludeePointInScaledSpace);
+			}
             surfaceTile.terrainState = TerrainState.TRANSFORMED;
         }, function() {
             surfaceTile.terrainState = TerrainState.FAILED;
