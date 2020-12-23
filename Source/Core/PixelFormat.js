@@ -322,7 +322,7 @@ define([
             var textureWidth = width * numberOfComponents;
             for (var i = 0; i < height; ++i) {
                 var row = i * width * numberOfComponents;
-                var flippedRow = (height - i - 1) * height * numberOfComponents;
+                var flippedRow = (height - i - 1) * width * numberOfComponents;
                 for (var j = 0; j < textureWidth; ++j) {
                     flipped[flippedRow + j] = bufferView[row + j];
                 }
