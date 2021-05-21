@@ -1145,7 +1145,7 @@ define([
 
         if (defined(camera.constrainedAxis)) {
             var right = Cartesian3.cross(camera.direction, camera.constrainedAxis, tilt3DCartesian3);
-            if (!Cartesian3.equalsEpsilon(right, Cartesian3.ZERO, CesiumMath.EPSILON1)) {
+            if (!Cartesian3.equalsEpsilon(right, Cartesian3.ZERO, CesiumMath.EPSILON6)) {
                 if (Cartesian3.dot(right, camera.right) < 0.0) {
                     Cartesian3.negate(right, right);
                 }
@@ -1774,7 +1774,7 @@ define([
 
         if (defined(camera.constrainedAxis)) {
             var right = Cartesian3.cross(camera.direction, camera.constrainedAxis, tilt3DCartesian3);
-            if (!Cartesian3.equalsEpsilon(right, Cartesian3.ZERO, CesiumMath.EPSILON6)) {
+            if (!Cartesian3.equalsEpsilon(right, Cartesian3.ZERO, CesiumMath.EPSILON1)) {
                 if (Cartesian3.dot(right, camera.right) < 0.0) {
                     Cartesian3.negate(right, right);
                 }
