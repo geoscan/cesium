@@ -255,8 +255,8 @@ define([
 
         primitive._levelZeroTiles = undefined;
 
-        //this._tileProvider.cancelReprojections();
-        primitive._tileProvider.cancelReprojections();
+        // TODO: remove quickfix comment after Cesium update. Issue is fixed in newer versions (https://github.com/CesiumGS/cesium/issues/6021)
+        // primitive._tileProvider.cancelReprojections();
     }
 
     /**
