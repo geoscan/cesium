@@ -249,7 +249,7 @@ define([
                     primitive._addHeightCallbacks.push(data);
                 }
 
-                levelZeroTiles[i].freeResources();
+                tile.freeResources();
             }
         }
 

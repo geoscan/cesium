@@ -161,6 +161,9 @@ define([
             rectangle = this._rectangle;
             for (i = 0; i < added.length; ++i) {
                 data = added[i];
+                if (removed.indexOf(data) !== -1) {
+                    continue;
+                }
                 if (Rectangle.contains(rectangle, data.positionCartographic)) {
                     customData.push(data);
                 }
@@ -522,6 +525,8 @@ define([
         this._northwestChild = undefined;
         freeTile(this._northeastChild);
         this._northeastChild = undefined;
+
+		this.customData.length = 0;
     };
 
     function freeTile(tile) {
